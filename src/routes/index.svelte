@@ -1,2 +1,20 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+    import Nav from '../components/Nav.svelte';
+    import Board from '../components/Board.svelte';
+    import { onKeyDown } from '../handlers/onKeyDown';
+
+    import { guess, totalGuesses } from '../store';
+
+    let guessValue = '';
+    let totalGuessesValue = 0;
+
+    guess.subscribe((newGuess) => guessValue = newGuess);
+    totalGuesses.subscribe((newTotalGuesses) => totalGuessesValue = newTotalGuesses);
+
+</script>
+
+<svelte:body on:keydown={(event) => onKeyDown(event, guessValue, totalGuessesValue)}/>
+<Nav />
+<Board />
+
+
