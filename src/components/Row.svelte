@@ -1,29 +1,44 @@
 <script>
-    import { guess, totalGuesses } from '../store';
+    import { gameState, error } from '../store';
+    import { getHintsForGuess } from '../utils';
     export let rowIndex = 0;
-
-    let letters = ['', '', '', '', ''];
-    let isCurrentRowActive = false;
-
-    totalGuesses.subscribe(value => {
-        isCurrentRowActive = value === rowIndex;
-    });
     
-    guess.subscribe(value => {
+    let hints = [];
+    let letters = ['', '', '', '', ''];
+    let isCurrentRowActive = true;
+    let hasCurrentRowBeenSubmitted = false;
+
+
+    gameState.subscribe(newState => {
+        const firstUnsubmittedIndex = newState.findIndex(guess => guess.submitted === false);
+        isCurrentRowActive = firstUnsubmittedIndex === rowIndex;
         if (isCurrentRowActive) {
-                value.split('').forEach((letter, i) => {
-                letters[i] = letter
-            })
+            const currentGuess = newState[rowIndex].guess;
+            letters = letters.map((_, i) => currentGuess[i] || '');
+        }
+        hasCurrentRowBeenSubmitted = newState[rowIndex].submitted;
+        if (hasCurrentRowBeenSubmitted) {
+            hints = getHintsForGuess(letters.join('').toUpperCase());
         }
     });
-
-
+    let doesCurrentRowHaveError = false;
+    error.subscribe((err) => {
+        if (typeof err === 'number') {
+            doesCurrentRowHaveError = isCurrentRowActive;
+            return;
+        }
+        doesCurrentRowHaveError = false;
+    });
     
 </script>
 <div class="game-row">
-    <div class="row">
+    <div class="row" class:shake={doesCurrentRowHaveError}>
         {#each letters as letter, i}
-            <div class="tile" class:has-input={!!letters[i]}>
+            <div 
+                class="tile {hints[i]}" 
+                class:tbd={!hints[i] && !!letter}
+                class:empty={!hints[i] && !letter}
+            >
                 {letters[i]}
             </div>
         {/each}
@@ -42,14 +57,31 @@
         text-transform: uppercase;
         height: 45px;
         width: 45px;
-        border: 2px solid rgb(211, 214, 218);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 26px;
         font-weight: 900;
     }
-    .has-input {
-        border: 2px solid black;
+    .empty {
+        border: 2px solid rgb(211, 214, 218);
+    }
+    .tbd {
+        border: 2px solid var(--black);
+        animation: bigger 0.3s cubic-bezier(.36,.07,.19,.97);
+        transform: scale(1);
+    }
+
+    @keyframes bigger {
+        0% {
+            transform: scale(1);
+        }
+        70% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+        }
+
     }
 </style>

@@ -1,20 +1,10 @@
 <script>
-import { beforeUpdate } from 'svelte';
 
-    import { totalGuesses as totalGuessesStore } from '../store';
-
-    let rows = [null, null, null, null, null, null];
-    import Row from './Row.svelte';
-
-    let totalGuesses = 0;
-
-    totalGuessesStore.subscribe((val) => {
-        totalGuesses = val;
-    });
-
-    beforeUpdate(() => {
-        console.log('before update - totalg', totalGuesses)
-    })
+let rows = [null, null, null, null, null, null];
+import Row from './Row.svelte';
+import Keyboard from './Keyboard.svelte';
+import ErrorMessage from './ErrorMessage.svelte';
+import WinMessage from './WinMessage.svelte';
 
 </script>
 <div class="game">
@@ -25,6 +15,9 @@ import { beforeUpdate } from 'svelte';
             {/each}
         </div>
     </div>
+    <Keyboard />
+    <ErrorMessage />
+    <WinMessage />
 </div>
 
 
@@ -36,6 +29,7 @@ import { beforeUpdate } from 'svelte';
         display: flex;
         flex-direction: column;
         height: 100%;
+        position: relative;
     }
     .board-container {
         display: flex;

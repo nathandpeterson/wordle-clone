@@ -1,20 +1,16 @@
 <script>
+    import '../style/global.css';
     import Nav from '../components/Nav.svelte';
     import Board from '../components/Board.svelte';
     import { onKeyDown } from '../handlers/onKeyDown';
+    import { setAnswerCode } from '../utils';
+    import { page } from '$app/stores';
 
-    import { guess, totalGuesses } from '../store';
-
-    let guessValue = '';
-    let totalGuessesValue = 0;
-
-    guess.subscribe((newGuess) => guessValue = newGuess);
-    totalGuesses.subscribe((newTotalGuesses) => totalGuessesValue = newTotalGuesses);
+    const source = $page.url.searchParams.get('source');
+    setAnswerCode(source);
 
 </script>
 
-<svelte:body on:keydown={(event) => onKeyDown(event, guessValue, totalGuessesValue)}/>
+<svelte:body on:keydown={(event) => onKeyDown(event)}/>
 <Nav />
 <Board />
-
-

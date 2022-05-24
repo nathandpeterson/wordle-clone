@@ -1,0 +1,53 @@
+html {
+    --gray-light: #d8d8d8;
+    --gray-dark: #939598;
+    --black: #212121;
+    --white: #FFF;
+    --green: #6aaa64;
+    --green-dark: #538d4e;
+    --yellow: #c9b458;
+    --yellow-dark: #b59f3b;
+    --orange: #f5793a;
+    --blue: #85c0f9;
+}
+
+.absent {
+    background-color: var(--gray-dark);
+    border-color: var(--gray-dark);
+    color: white;
+}
+.present {
+    background-color: var(--yellow);
+    border-color:  var(--yellow);
+    color: white;
+}
+.correct {
+    background-color: var(--green);
+    border-color: var(--green);
+    color: white;
+}
+
+.shake {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
