@@ -2,9 +2,13 @@ import { derived, writable } from 'svelte/store';
 
 type HINT_TYPE = 'correct' | 'present' | 'absent';
 
-export enum DIALOG_TYPE { 'NOT ENOUGH LETTERS', 'NOT IN WORD LIST', ''}
+export type DIALOG_TYPE = 'NOT ENOUGH LETTERS' | 'NOT IN WORD LIST' | 'ANSWER' | 'WIN' | 'CLEAR';
 
-export const dialog = writable<DIALOG_TYPE | ''>('');
+export enum WIN_MESSAGE {
+    'GENIUS', 'MAGNIFICENT', 'IMPRESSIVE', 'SPLENDID', 'GREAT', 'PHEW'
+}
+
+export const dialog = writable<DIALOG_TYPE>('CLEAR');
 export const answer = writable<string>('');
 export const winState = writable<boolean>(false);
 

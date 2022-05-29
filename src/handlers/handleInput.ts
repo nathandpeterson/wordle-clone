@@ -1,5 +1,6 @@
 import { get } from 'svelte/store';
-import { answer as answerStore, dialog, DIALOG_TYPE, gameState, updateBestHintForLetter, winState } from '../store/';
+import { answer as answerStore, dialog, gameState, updateBestHintForLetter } from '../store/';
+import type { DIALOG_TYPE } from '../store/';
 import { getHintsForGuess, WORDS } from '../utils';
 
 const getIsAlphabetic = (s: string) => s.match(/[A-Za-z]/);
@@ -11,10 +12,10 @@ const getIsValidWord = async (guess: string): Promise<boolean> => {
     return WORDS.includes(guess.toLowerCase());
 }
 
-const handleError = (dialogType: DIALOG_TYPE) => {
+const setDialog = (dialogType: DIALOG_TYPE) => {
     dialog.set(dialogType);
     setTimeout(() => {
-        dialog.set('');
+        dialog.set('CLEAR');
     }, 2000);
 };
 
@@ -43,19 +44,13 @@ export const handleInput =  async (input: string) => {
         const currentGuess = game[indexOfCurrentGuess].guess;
         const isCurrentGuessValidLength = getIsValidLength(currentGuess);
         if (!isCurrentGuessValidLength) {
-            return handleError(DIALOG_TYPE['NOT ENOUGH LETTERS']);
+            return setDialog('NOT ENOUGH LETTERS');
         };
 
         const isCurrentGuessValidWord = await getIsValidWord(currentGuess);
         if (!isCurrentGuessValidWord) {
-           return handleError(DIALOG_TYPE['NOT IN WORD LIST']);
+           return setDialog('NOT IN WORD LIST');
         }
-        const newGame = game.map((g, i) => {
-            if (i === indexOfCurrentGuess) {
-                return { ...g, submitted: true }
-            }
-            return g;
-        });
 
         const hints = getHintsForGuess(currentGuess);
 
@@ -63,12 +58,25 @@ export const handleInput =  async (input: string) => {
             updateBestHintForLetter(letter, hints[i]);
         })
 
+        const newGame = game.map((g, i) => {
+            if (i === indexOfCurrentGuess) {
+                return { ...g, submitted: true }
+            }
+            return g;
+        });
+
         const answer = get(answerStore);
         if (currentGuess === answer) {
-            winState.set(true);
+            setDialog('WIN')
+            gameState.set(newGame);
+            return;
         }
-
+        if (newGame.every(guess => guess.submitted === true)) {
+            gameState.set(newGame);
+            return setDialog('ANSWER');
+        }
         gameState.set(newGame);
+
     } else if (input.length === 1 && game[indexOfCurrentGuess].guess.length < 5) {
         const uppercaseInput = input.toUpperCase();
         const newGame = game.map((g, i) => {

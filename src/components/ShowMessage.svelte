@@ -1,16 +1,22 @@
 <script>
     import { fade } from 'svelte/transition';
-    import { dialog, DIALOG_TYPE } from '../store';
+    import { answer, currentRowIndex, dialog, WIN_MESSAGE } from '../store';
     let dialogMessage = '';
     let visible = false;
 
     dialog.subscribe(currentDialog => {
-        if (typeof currentDialog === 'number') {
-            dialogMessage = DIALOG_TYPE[currentDialog];
+        if (currentDialog === 'ANSWER') {
+            dialogMessage = $answer;
             visible = true;
-        } else {
+        } else if (currentDialog === 'CLEAR') {
             dialogMessage = '';
             visible = false;
+        } else if (currentDialog === 'WIN') {
+            dialogMessage = WIN_MESSAGE[$currentRowIndex]
+            visible = true;
+        } else {
+            dialogMessage = currentDialog;
+            visible = true;
         }
     });
 
