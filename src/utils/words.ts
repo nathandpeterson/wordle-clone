@@ -1,6 +1,6 @@
 export const getRandomWord = () => WORDS[Math.floor(Math.random() * WORDS.length)].toUpperCase();
 
-const WORDS = [
+export const WORDS = [
     'which',
     'there',
     'their',

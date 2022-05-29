@@ -1,17 +1,20 @@
 <script>
     import { derived } from 'svelte/store';
-    import { gameState, error, winState } from '../store';
+    import { gameState, dialog, winState, currentRowIndex } from '../store';
     import { getHintsForGuess } from '../utils';
+    
     export let rowIndex = 0;
     
     let hints = [];
     let letters = ['', '', '', '', ''];
-    let isCurrentRowActive = true;
+    let isCurrentRowActive = $currentRowIndex === rowIndex;
     let hasCurrentRowBeenSubmitted = false;
 
+    currentRowIndex.subscribe(currentRowIndex => {
+        isCurrentRowActive = currentRowIndex === rowIndex
+    });
+
     gameState.subscribe(newState => {
-        const firstUnsubmittedIndex = newState.findIndex(guess => guess.submitted === false);
-        isCurrentRowActive = firstUnsubmittedIndex === rowIndex;
         if (isCurrentRowActive) {
             const currentGuess = newState[rowIndex].guess;
             letters = letters.map((_, i) => currentGuess[i] || '');
@@ -22,7 +25,7 @@
         }
     });
     let doesCurrentRowHaveError = false;
-    error.subscribe((err) => {
+    dialog.subscribe((err) => {
         if (typeof err === 'number') {
             doesCurrentRowHaveError = isCurrentRowActive;
             return;
@@ -71,13 +74,15 @@
     }
     .tile {
         text-transform: uppercase;
-        height: 45px;
-        width: 45px;
+        height: 1.7em;
+        width: 1.7em;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 2rem;
         font-weight: 900;
+        margin: 1px;
+        text-align: center;
     }
     .empty {
         border: 2px solid rgb(211, 214, 218);
@@ -99,7 +104,6 @@
             transform: scale(1);
         }
     }
-
 
   .pop {
     animation-name: PopIn;

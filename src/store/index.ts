@@ -2,9 +2,9 @@ import { derived, writable } from 'svelte/store';
 
 type HINT_TYPE = 'correct' | 'present' | 'absent';
 
-export enum ERROR_TYPE { 'NOT ENOUGH LETTERS', 'NOT IN WORD LIST'}
+export enum DIALOG_TYPE { 'NOT ENOUGH LETTERS', 'NOT IN WORD LIST', ''}
 
-export const error = writable<ERROR_TYPE | ''>('');
+export const dialog = writable<DIALOG_TYPE | ''>('');
 export const answer = writable<string>('');
 export const winState = writable<boolean>(false);
 
@@ -24,19 +24,8 @@ export const gameState = writable<Game>([
     { guess: '', submitted: false }
 ]);
 
-// return index of first guess that has not been submitted
-export const getCurrentGuessIndex = derived(gameState, $gameState => {
-    return $gameState.findIndex(guess => guess.submitted === false);
-});
-
-export const getCurrentGuess = derived(gameState, $gameState => {
-    return $gameState.find(guess => guess.submitted === false);
-});
-
-// return array of all guess strings that have been submitted
-export const getAllSubmittedGuesses = derived(gameState, $gameState => {
-    return $gameState.filter(g => g.submitted === true).map(g => g.guess);
-});
+export const currentRowIndex = derived(gameState, $gameState => 
+    $gameState.findIndex(guess => guess.submitted === false));
 
 type BestHintForLetter = { [key: string]: HINT_TYPE };
 

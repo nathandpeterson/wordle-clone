@@ -1,15 +1,15 @@
 <script>
     import { fade } from 'svelte/transition';
-    import { error, ERROR_TYPE } from '../store';
-    let errorMessage = '';
+    import { dialog, DIALOG_TYPE } from '../store';
+    let dialogMessage = '';
     let visible = false;
 
-    error.subscribe(currentError => {
-        if (typeof currentError === 'number') {
-            errorMessage = ERROR_TYPE[currentError];
+    dialog.subscribe(currentDialog => {
+        if (typeof currentDialog === 'number') {
+            dialogMessage = DIALOG_TYPE[currentDialog];
             visible = true;
         } else {
-            errorMessage = '';
+            dialogMessage = '';
             visible = false;
         }
     });
@@ -19,7 +19,7 @@
 <div>
 {#if visible}
     <div transition:fade class='notification-error'>
-        {errorMessage}
+        {dialogMessage}
     </div>
 {/if}
 </div>

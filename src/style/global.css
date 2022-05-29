@@ -9,6 +9,12 @@ html {
     --yellow-dark: #b59f3b;
     --orange: #f5793a;
     --blue: #85c0f9;
+
+    height: 100vh;
+}
+
+body {
+    height: 100vh;
 }
 
 .absent {
