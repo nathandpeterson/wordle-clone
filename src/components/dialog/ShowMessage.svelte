@@ -1,6 +1,6 @@
 <script>
     import { fade } from 'svelte/transition';
-    import { answer, currentRowIndex, dialog, WIN_MESSAGE } from '../store';
+    import { answer, currentRowIndex, dialog, WIN_MESSAGE } from '../../store';
     let dialogMessage = '';
     let visible = false;
 

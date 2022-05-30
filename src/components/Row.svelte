@@ -1,7 +1,6 @@
 <script>
     import { derived } from 'svelte/store';
     import { gameState, dialog, winState, currentRowIndex } from '../store';
-    import { getHintsForGuess } from '../utils';
     
     export let rowIndex = 0;
     
@@ -21,7 +20,11 @@
         }
         hasCurrentRowBeenSubmitted = newState[rowIndex].submitted;
         if (hasCurrentRowBeenSubmitted) {
-            hints = getHintsForGuess(letters.join('').toUpperCase());
+            hints = newState[rowIndex].hints;
+        }
+        if (newState.every(guess => guess.guess === '')) {
+            letters = ['', '', '', '', ''];
+            hints = [];
         }
     });
     let doesCurrentRowHaveError = false;

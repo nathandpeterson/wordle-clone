@@ -1,4 +1,5 @@
 import { derived, writable } from 'svelte/store';
+import { getRandomWord } from '../utils';
 
 type HINT_TYPE = 'correct' | 'present' | 'absent';
 
@@ -14,22 +15,38 @@ export const winState = writable<boolean>(false);
 
 interface Guess {
     guess: string;
-    submitted: boolean; 
+    submitted: boolean;
+    hints: HINT_TYPE[];
 }   
 
 type Game = Guess[];
 
-export const gameState = writable<Game>([
-    { guess: '', submitted: false },
-    { guess: '', submitted: false },
-    { guess: '', submitted: false },
-    { guess: '', submitted: false },
-    { guess: '', submitted: false },
-    { guess: '', submitted: false }
-]);
+const initialGameState = [
+    { guess: '', hints: [], submitted: false },
+    { guess: '', hints: [], submitted: false },
+    { guess: '', hints: [], submitted: false },
+    { guess: '', hints: [], submitted: false },
+    { guess: '', hints: [], submitted: false },
+    { guess: '', hints: [], submitted: false }
+];
+
+export const gameState = writable<Game>(initialGameState);
 
 export const currentRowIndex = derived(gameState, $gameState => 
     $gameState.findIndex(guess => guess.submitted === false));
+
+export const isGameOver = derived([gameState, winState], ([$gameState, $winState]) => {
+    if ($gameState.every(guess => guess.submitted === true)) {
+        return true;
+    }
+    return $winState;
+});
+
+export const restartGame = () => {
+    gameState.set(initialGameState);
+    winState.set(false);
+    answer.set(getRandomWord());
+};
 
 type BestHintForLetter = { [key: string]: HINT_TYPE };
 

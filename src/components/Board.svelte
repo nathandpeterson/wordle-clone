@@ -3,8 +3,8 @@
 let rows = [null, null, null, null, null, null];
 import Row from './Row.svelte';
 import Keyboard from './Keyboard.svelte';
-import ShowMessage from './ShowMessage.svelte';
-import WinMessage from './WinMessage.svelte';
+import ShowMessage from './dialog/ShowMessage.svelte';
+import GameOverDialog from './dialog/GameOverDialog.svelte';
 
 </script>
 <div class="game">
@@ -17,7 +17,7 @@ import WinMessage from './WinMessage.svelte';
     </div>
     <Keyboard />
     <ShowMessage />
-    <WinMessage />
+    <GameOverDialog />
 </div>
 
 

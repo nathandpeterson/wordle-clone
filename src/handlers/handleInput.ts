@@ -1,5 +1,5 @@
 import { get } from 'svelte/store';
-import { answer as answerStore, dialog, gameState, updateBestHintForLetter } from '../store/';
+import { answer as answerStore, dialog, gameState, updateBestHintForLetter, winState } from '../store/';
 import type { DIALOG_TYPE } from '../store/';
 import { getHintsForGuess, WORDS } from '../utils';
 
@@ -32,6 +32,7 @@ export const handleInput =  async (input: string) => {
         const newGame = game.map((g, i) => {
             if (i === indexOfCurrentGuess) {
                 return {
+                    ...g,
                     guess: currentGuess.slice(0, currentGuess.length - 1),
                     submitted: false,
                 }
@@ -60,14 +61,15 @@ export const handleInput =  async (input: string) => {
 
         const newGame = game.map((g, i) => {
             if (i === indexOfCurrentGuess) {
-                return { ...g, submitted: true }
+                return { ...g, hints, submitted: true }
             }
             return g;
         });
 
         const answer = get(answerStore);
         if (currentGuess === answer) {
-            setDialog('WIN')
+            setDialog('WIN');
+            winState.set(true);
             gameState.set(newGame);
             return;
         }
