@@ -19,18 +19,18 @@ body {
 
 .absent {
     background-color: var(--gray-dark);
-    border-color: var(--gray-dark);
-    color: white;
+    border: 1px solid var(--gray-dark);
+    color: var(--white) !important;
 }
 .present {
     background-color: var(--yellow);
-    border-color:  var(--yellow);
-    color: white;
+    border: 1px solid var(--yellow);
+    color: var(--white) !important;
 }
 .correct {
     background-color: var(--green);
-    border-color: var(--green);
-    color: white;
+    border-color: 1px solid var(--green);
+    color: var(--white) !important;
 }
 
 .shake {
