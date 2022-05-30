@@ -86,6 +86,7 @@
         font-weight: 900;
         margin: 1px;
         text-align: center;
+        color: var(--black);
     }
     .empty {
         border: 2px solid rgb(211, 214, 218);

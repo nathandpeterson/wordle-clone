@@ -9,6 +9,8 @@
     bestHintForLetter.subscribe(bestHints => {
         if (bestHints[display]) {
             bestHint = bestHints[display]
+        } else {
+            bestHint = '';
         }
     });
 
@@ -30,6 +32,7 @@ button {
     font-weight: 900;
     text-transform:uppercase;
     border-radius: 5px;
+    user-select: none;
 }
 .empty {
     background-color: var(--gray-light);

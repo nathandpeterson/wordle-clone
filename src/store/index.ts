@@ -46,6 +46,7 @@ export const restartGame = () => {
     gameState.set(initialGameState);
     winState.set(false);
     answer.set(getRandomWord());
+    bestHintForLetter.set({});
 };
 
 type BestHintForLetter = { [key: string]: HINT_TYPE };
