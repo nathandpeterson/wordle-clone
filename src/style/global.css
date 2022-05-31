@@ -19,17 +19,17 @@ body {
 
 .absent {
     background-color: var(--gray-dark);
-    border: 1px solid var(--gray-dark);
+    border: 2px solid var(--gray-dark);
     color: var(--white) !important;
 }
 .present {
     background-color: var(--yellow);
-    border: 1px solid var(--yellow);
+    border: 2px solid var(--yellow);
     color: var(--white) !important;
 }
 .correct {
     background-color: var(--green);
-    border-color: 1px solid var(--green);
+    border: 2px solid var(--green);
     color: var(--white) !important;
 }
 
