@@ -1,6 +1,7 @@
 <script>
     import { derived } from 'svelte/store';
-    import { gameState, dialog, winState, currentRowIndex } from '../store';
+    import Tile from './Tile.svelte';
+    import { gameState, dialog, ERRORS, winState, currentRowIndex } from '../store';
     
     export let rowIndex = 0;
     
@@ -28,8 +29,8 @@
         }
     });
     let doesCurrentRowHaveError = false;
-    dialog.subscribe((err) => {
-        if (typeof err === 'number') {
+    dialog.subscribe((dialogMessage) => {
+        if (ERRORS.includes(dialogMessage)) {
             doesCurrentRowHaveError = isCurrentRowActive;
             return;
         }
@@ -40,7 +41,6 @@
     derived([gameState, winState], ([$gameState, $winState]) => {
         if ($winState === true) {
             const allRowsWithGuesses = $gameState.filter(game => !!game.guess);
-            console.log({ allRowsWithGuesses });
             return rowIndex === allRowsWithGuesses.length - 1;
         }
         return false;
@@ -55,14 +55,7 @@
 <div class="game-row">
     <div class="row" class:shake={doesCurrentRowHaveError}>
         {#each letters as letter, i}
-            <div 
-                class="tile {hints[i]}" 
-                class:tbd={!hints[i] && !!letter}
-                class:empty={!hints[i] && !letter}
-                class:win={didCurrentRowJustWin}
-            >
-                {letters[i]}
-            </div>
+            <Tile letter={letters[i]} hint={hints[i]} index={i}/>
         {/each}
     </div>
 </div>

@@ -4,6 +4,7 @@ import { getRandomWord } from '../utils';
 type HINT_TYPE = 'correct' | 'present' | 'absent';
 
 export type DIALOG_TYPE = 'NOT ENOUGH LETTERS' | 'NOT IN WORD LIST' | 'ANSWER' | 'WIN' | 'CLEAR';
+export const ERRORS: DIALOG_TYPE[] = ['NOT ENOUGH LETTERS', 'NOT IN WORD LIST'];
 
 export enum WIN_MESSAGE {
     'GENIUS', 'MAGNIFICENT', 'IMPRESSIVE', 'SPLENDID', 'GREAT', 'PHEW'
