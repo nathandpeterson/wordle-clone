@@ -34,19 +34,14 @@
         }, (ANIMATION_DELAY) + ANIMATION_DURATION / 2);
       }
 
-      function getClass(l, h) {
-        if (!letter) {
-          return 'empty'
-        } else if (letter && !shouldRevealHint) {
-          return 'tbd'
-        } else if (shouldRevealHint) {
-          return hint;
-        }
+      $: if (!letter) {
+        // to allow replay, reset reveal hint when letter absent
+        shouldRevealHint = false;
       }
 </script>
 
 {#key hint}
-    <div class="tile {getClass(letter, hint)} {shouldRevealHint && hint ? hint : ''}"
+    <div class="tile {!letter && 'empty'} {letter && !shouldRevealHint && 'tbd'} {shouldRevealHint && hint ? hint : ''}"
         in:flipout
     >
         {letter}
