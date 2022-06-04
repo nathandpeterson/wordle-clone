@@ -1,11 +1,11 @@
-<script>
+<script lang="ts">
     import { derived } from 'svelte/store';
     import Tile from './Tile.svelte';
     import { gameState, dialog, ERRORS, winState, currentRowIndex } from '../store';
     
     export let rowIndex = 0;
     
-    let hints = [];
+    let hints: string[] = [];
     let letters = ['', '', '', '', ''];
     let isCurrentRowActive = $currentRowIndex === rowIndex;
     let hasCurrentRowBeenSubmitted = false;
@@ -53,7 +53,7 @@
     
 </script>
 <div class="game-row">
-    <div class="row" class:shake={doesCurrentRowHaveError}>
+    <div class="row" class:shake={doesCurrentRowHaveError} class:win={didCurrentRowJustWin}>
         {#each letters as letter, i}
             <Tile letter={letters[i]} hint={hints[i]} index={i}/>
         {/each}
@@ -68,85 +68,8 @@
         display: grid;
         grid-template-columns: repeat(5, 1fr);
     }
-    .tile {
-        text-transform: uppercase;
-        height: 1.7em;
-        width: 1.7em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        font-weight: 900;
-        margin: 1px;
-        text-align: center;
-        color: var(--black);
-    }
-    .empty {
-        border: 2px solid rgb(211, 214, 218);
-    }
-    .tbd {
-        border: 2px solid var(--black);
-        animation: bigger 0.3s cubic-bezier(.36,.07,.19,.97);
-        transform: scale(1);
-    }
 
-    @keyframes bigger {
-        0% {
-            transform: scale(1);
-        }
-        70% {
-            transform: scale(1.1);
-        }
-        100% {
-            transform: scale(1);
-        }
-    }
-
-  .pop {
-    animation-name: PopIn;
-    animation-duration: 100ms;
-  }
-
-  @keyframes PopIn {
-    from {
-      transform: scale(0.8);
-      opacity: 0;
-    }
-
-    40% {
-      transform: scale(1.1);
-      opacity: 1;
-    }
-  }
-
-  .flip-in {
-    animation-name: FlipIn;
-    animation-duration: 250ms;
-    animation-timing-function: ease-in;
-  }
-  @keyframes FlipIn {
-    0% {
-      transform: rotateX(0);
-    }
-    100% {
-      transform: rotateX(-90deg);
-    }
-  }
-  .flip-out {
-    animation-name: FlipOut;
-    animation-duration: 250ms;
-    animation-timing-function: ease-in;
-  }
-  @keyframes FlipOut {
-    0% {
-      transform: rotateX(-90deg);
-    }
-    100% {
-      transform: rotateX(0);
-    }
-  }
-
-  .win {
+    .win {
       animation-name: Bounce;
       animation-duration: 1000ms;
     }

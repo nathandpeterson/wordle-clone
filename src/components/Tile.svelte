@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     export let letter = '';
     export let hint = '';
     export let index = 0;;
@@ -7,14 +7,14 @@
     const ANIMATION_DELAY = index * 150;
     const ANIMATION_DURATION = 500;
 
-    function flipout(node, {
+    function flipout(_: HTMLElement, {
               delay = ANIMATION_DELAY,
               duration = ANIMATION_DURATION
         }) {
             return {
                 delay,
                 duration,
-                css: (timer) => {
+                css: (timer: number) => {
                   if (timer < 0.5) {
                     // rotates tile vertically until it hits 90 deg
                     return `transform: rotateX(${timer * 180}deg);`
@@ -59,7 +59,6 @@
         font-size: 2rem;
         font-weight: 900;
         margin: 1px;
-        text-align: center;
         color: var(--black);
     }
     .empty {
