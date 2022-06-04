@@ -2,36 +2,54 @@
     export let letter = '';
     export let hint = '';
     export let index = 0;;
-    let hasFlipped = false;
-    let isFlipping = false;
+    let shouldRevealHint = false;
+
+    const ANIMATION_DELAY = index * 150;
+    const ANIMATION_DURATION = 500;
 
     function flipout(node, {
-              delay = index * 150,
-              duration = 500
+              delay = ANIMATION_DELAY,
+              duration = ANIMATION_DURATION
         }) {
             return {
                 delay,
                 duration,
                 css: (timer) => {
-                  return `transform: rotateX(${timer * 180}deg);`
+                  if (timer < 0.5) {
+                    // rotates tile vertically until it hits 90 deg
+                    return `transform: rotateX(${timer * 180}deg);`
+                  }
+                  // to avoid having letter be upside down,
+                  // reverse direction and rotate tile back the way it came from
+                  const difference = 1 - timer;
+                  return `transform: rotateX(${difference * 180}deg);`
                 }
             };
         }
       $: if (hint) {
-        let revealTime = (index * 150) + 500;
+        // once the hint prop is passed, we want to wait for the animation to be at
+        // the halfway point before changing the color of the tile
         setTimeout(() => {
-          isFlipping = true;
-        }, index * 150);
-        setTimeout(()=> {
-          hasFlipped = true;
-          isFlipping = false;
-        }, revealTime);
+          shouldRevealHint = true;
+        }, (ANIMATION_DELAY) + ANIMATION_DURATION / 2);
+      }
+
+      function getClass(l, h) {
+        if (!letter) {
+          return 'empty'
+        } else if (letter && !shouldRevealHint) {
+          return 'tbd'
+        } else if (shouldRevealHint) {
+          return hint;
+        }
       }
 </script>
 
 {#key hint}
-    <div class="tile {(hasFlipped || isFlipping) && hint} {(!letter && !hint ) && "empty"} {((letter && !hint)) && "tbd"}" in:flipout>
-        {isFlipping ? '' : letter}
+    <div class="tile {getClass(letter, hint)} {shouldRevealHint && hint ? hint : ''}"
+        in:flipout
+    >
+        {letter}
     </div>
 {/key}
 
@@ -58,7 +76,6 @@
         transform: scale(1);
     }
 
-
     @keyframes bigger {
         0% {
             transform: scale(1);
@@ -70,49 +87,5 @@
             transform: scale(1);
         }
     }
-
-  .pop {
-    animation-name: PopIn;
-    animation-duration: 100ms;
-  }
-
-  @keyframes PopIn {
-    from {
-      transform: scale(0.8);
-      opacity: 0;
-    }
-
-    40% {
-      transform: scale(1.1);
-      opacity: 1;
-    }
-  }
-
-  .flip-in {
-    animation-name: FlipIn;
-    animation-duration: 250ms;
-    animation-timing-function: ease-in;
-  }
-  @keyframes FlipIn {
-    0% {
-      transform: rotateX(0);
-    }
-    100% {
-      transform: rotateX(-90deg);
-    }
-  }
-  .flip-out {
-    animation-name: FlipOut;
-    animation-duration: 250ms;
-    animation-timing-function: ease-in;
-  }
-  @keyframes FlipOut {
-    0% {
-      transform: rotateX(-90deg);
-    }
-    100% {
-      transform: rotateX(0);
-    }
-  }
 
 </style>
