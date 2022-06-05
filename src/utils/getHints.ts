@@ -31,7 +31,6 @@ export const getHintsForGuess = (_guess: string) => {
         } else if (!hints[i]) {
             hints[i] = 'absent';
         }
-        console.log({ wordLetters, hints, 'guess[i]': guess[i] });
     }
     return hints;
 };

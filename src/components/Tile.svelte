@@ -16,16 +16,18 @@
                 duration,
                 css: (timer: number) => {
                     if (!hint) {
-                        return;
+                        return '';
                     }
                     if (timer < 0.5) {
                         // rotates tile vertically until it hits 90 deg
-                        return `-webkit-transform: rotateX(${timer * 180}deg);`
+                        return `transform: rotateX(${timer * 180}deg);
+                        -webkit-transform: rotateX(${timer * 180}deg);`
                     }
                     // to avoid having letter be upside down,
                     // reverse direction and rotate tile back the way it came from
                     const difference = 1 - timer;
-                    return `-webkit-transform: rotateX(${difference * 180}deg);`
+                    return `transform: rotateX(${difference * 180}deg);
+                    -webkit-transform: rotateX(${difference * 180}deg);`
                 }
             };
         }
@@ -70,7 +72,9 @@
     .tbd {
         border: 2px solid var(--black);
         animation: bigger 0.3s cubic-bezier(.36,.07,.19,.97);
+        -webkit-animation: bigger 0.3s cubic-bezier(.36,.07,.19,.97);
         transform: scale(1);
+        -webkit-transform: scale(1);
     }
 
     @keyframes bigger {
@@ -82,6 +86,18 @@
         }
         100% {
             transform: scale(1);
+        }
+    }
+
+    @-webkit-keyframes bigger {
+        0% {
+            -webkit-transform: scale(1);
+        }
+        70% {
+            -webkit-transform: scale(1.1);
+        }
+        100% {
+            -webkit-transform: scale(1);
         }
     }
 
