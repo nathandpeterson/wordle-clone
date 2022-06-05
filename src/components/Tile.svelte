@@ -20,12 +20,12 @@
                     }
                     if (timer < 0.5) {
                         // rotates tile vertically until it hits 90 deg
-                        return `transform: rotateX(${timer * 180}deg);`
+                        return `-webkit-transform: rotateX(${timer * 180}deg);`
                     }
                     // to avoid having letter be upside down,
                     // reverse direction and rotate tile back the way it came from
                     const difference = 1 - timer;
-                    return `transform: rotateX(${difference * 180}deg);`
+                    return `-webkit-transform: rotateX(${difference * 180}deg);`
                 }
             };
         }
