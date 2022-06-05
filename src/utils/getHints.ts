@@ -3,7 +3,7 @@ import { answer } from '../store';
 
 type HINT_TYPE = 'correct' | 'present' | 'absent';
 
-// we only want to show one 'present' hint per number letter occurences
+// we only want to show one 'present' hint per number letter occurences.
 // remove letter from answer each time we provide a hint to avoid showing
 // multiple 'present' hints when only one letter instance is present
 // remove the first instance of a letter from an array of letters
@@ -17,7 +17,7 @@ export const getHintsForGuess = (_guess: string) => {
     // use to only show one hint per letter from answer
     let wordLetters = currentAnswer.split('');
     let hints: HINT_TYPE[] = [];
-    // we iterate through the guess twice to avoid providing
+    // we iterate through the guess twice to avoid duplication between 'correct' and 'present'
     for (let i = 0; i < guess.length; i++) {
         if (guess[i] === currentAnswer[i]) {
             hints[i] = 'correct';
@@ -31,7 +31,6 @@ export const getHintsForGuess = (_guess: string) => {
         } else if (!hints[i]) {
             hints[i] = 'absent';
         }
-        console.log({ wordLetters, hints, 'guess[i]': guess[i] });
     }
     return hints;
 };
