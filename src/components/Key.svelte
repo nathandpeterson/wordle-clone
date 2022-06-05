@@ -33,6 +33,7 @@ button {
     text-transform:uppercase;
     border-radius: 5px;
     user-select: none;
+    color: var(--black);
 }
 .empty {
     background-color: var(--gray-light);
